@@ -1,73 +1,42 @@
-"""
-This script tests the functionality of the camera input for the Auto-aiming-Dustbin project.
+from __future__ import annotations
 
-Usage Instructions:
-1. Run the script using Python 3.
-2. Ensure your camera is connected and accessible.
-3. The script will display the camera feed and output test results.
-4. Press 'q' to quit the live feed.
-"""
+from unittest.mock import MagicMock, patch
 
-import cv2
-import time
 import numpy as np
-from termcolor import colored
+import pytest
 
-# Camera settings
-def test_camera():
-    camera = cv2.VideoCapture(0)
-    if not camera.isOpened():
-        print(colored("ERROR: Camera not found!", 'red'))
-        return False
+from vision.camera_feed import CameraConfig, CameraFeed
 
-    # Get expected resolution
-    expected_width = 1280
-    expected_height = 720
-    camera.set(cv2.CAP_PROP_FRAME_WIDTH, expected_width)
-    camera.set(cv2.CAP_PROP_FRAME_HEIGHT, expected_height)
 
-    # Measure actual FPS
-    start_time = time.time()
-    frame_count = 0
-    total_time = 0
-    print(colored("Press 'q' to quit", 'yellow'))
+def test_camera_config_from_dict():
+    c = CameraConfig.from_dict({"index": 1, "width": 320, "height": 240, "fps": 30.0})
+    assert c.index == 1
+    assert c.width == 320
+    assert c.height == 240
+    assert c.fps == 30.0
 
-    while True:
-        ret, frame = camera.read()
-        if not ret:
-            print(colored("ERROR: Could not read frame!", 'red'))
-            break
 
-        # Calculate frame resolution
-        height, width, _ = frame.shape
+@patch("vision.camera_feed.cv2.VideoCapture")
+def test_camera_read(mock_cap_cls):
+    mock_cap = MagicMock()
+    mock_cap.isOpened.return_value = True
+    mock_cap.read.return_value = (True, np.zeros((480, 640, 3), dtype=np.uint8))
+    mock_cap_cls.return_value = mock_cap
 
-        # Check resolution
-        if (width, height) != (expected_width, expected_height):
-            print(colored("WARNING: Frame resolution is not as expected!", 'yellow'))
+    feed = CameraFeed(CameraConfig(index=0))
+    feed.open()
+    ok, frame = feed.read()
+    assert ok
+    assert frame.shape == (480, 640, 3)
+    feed.close()
 
-        # Display live feed
-        cv2.imshow('Live Camera Feed', frame)
-        frame_count += 1
 
-        # Handle quitting
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+@patch("vision.camera_feed.cv2.VideoCapture")
+def test_camera_open_failure(mock_cap_cls):
+    mock_cap = MagicMock()
+    mock_cap.isOpened.return_value = False
+    mock_cap_cls.return_value = mock_cap
 
-        # Measure frame processing time
-        total_time += time.time() - start_time
-        start_time = time.time()
-
-    camera.release()
-    cv2.destroyAllWindows()
-
-    # Calculate FPS and frame quality metrics
-    actual_fps = frame_count / total_time if total_time > 0 else 0
-    print(colored(f"Captured {frame_count} frames at an actual FPS of {actual_fps:.2f}", 'green'))
-    if actual_fps < 10:
-        print(colored("WARNING: FPS is lower than expected!", 'yellow'))
-    else:
-        print(colored("PASS: Camera test completed successfully!", 'green'))
-
-# Run the camera test
-if __name__ == '__main__':
-    test_camera()
+    feed = CameraFeed(CameraConfig(index=99))
+    with pytest.raises(RuntimeError):
+        feed.open()
