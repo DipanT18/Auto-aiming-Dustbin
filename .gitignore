@@ -29,6 +29,8 @@ Thumbs.db
 calibration/*.npz
 calibration/*.json
 !calibration/.gitkeep
+calibration_data/*.npz
+calibration_data/*.json
 config/local.yaml
 config/secrets.yaml
 
