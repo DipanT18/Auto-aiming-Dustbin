@@ -1,0 +1,40 @@
+# Auto-Aiming Dustbin — root configuration file
+#
+# Copy this file to config/local.yaml and adjust for your machine.
+# The main application loads config/default.yaml by default;
+# pass --config config/local.yaml to override.
+
+camera:
+  index: 0          # USB camera index (0 = first camera)
+  width: 640
+  height: 480
+  fps: 30            # set null to use camera default
+
+serial:
+  port: /dev/ttyUSB0  # Linux: /dev/ttyUSB0 | Windows: COM3 | macOS: /dev/cu.usbserial-*
+  baud_rate: 115200
+  timeout: 1.0
+
+detection:
+  blur: 5               # Gaussian blur kernel size (must be odd)
+  min_area: 400         # minimum contour area in pixels²
+  motion_threshold: 25  # frame-diff threshold (0-255)
+
+tracker:
+  max_history: 30
+  max_lost_frames: 5
+  landed_threshold_px: 8.0
+  landed_patience: 3
+
+trajectory:
+  history: 8          # number of centroid samples for curve fitting
+  floor_row: 480      # pixel row considered "floor level" (= camera height)
+  horizon_s: 0.35     # fallback look-ahead time when no floor intercept found
+  min_samples: 3      # minimum samples before prediction is attempted
+
+motor_control:
+  center_x: 320       # pixel x of platform centre (update after calibration)
+  center_y: 240       # pixel y of platform centre
+  gain: 0.5           # proportional gain (pixels → PWM units)
+  max_speed: 200      # maximum PWM value sent to Arduino (0-255)
+  deadband_px: 10     # ignore errors smaller than this (pixels)
