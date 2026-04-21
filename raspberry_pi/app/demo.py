@@ -36,7 +36,7 @@ TOTAL_FRAMES = 90  # ~3 seconds
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Auto-Aiming Dustbin — demo mode (no hardware)")
-    p.add_argument("--config", type=Path, default=Path("config/default.yaml"))
+    p.add_argument("--config", type=Path, default=Path(__file__).parent.parent / "config" / "local.yaml")
     p.add_argument("--show", action="store_true", help="Display OpenCV window")
     return p.parse_args(argv)
 

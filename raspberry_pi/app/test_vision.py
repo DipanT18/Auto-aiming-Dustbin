@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Vision system test (no motors)")
-    p.add_argument("--config", type=Path, default=Path("config/default.yaml"))
+    p.add_argument("--config", type=Path, default=Path(__file__).parent.parent / "config" / "local.yaml")
     p.add_argument("--show", action="store_true", help="Show OpenCV window")
     p.add_argument("--frames", type=int, default=0, help="Stop after N frames (0=unlimited)")
     return p.parse_args(argv)

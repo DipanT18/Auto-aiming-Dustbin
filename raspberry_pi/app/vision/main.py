@@ -20,7 +20,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument(
         "--config",
         type=Path,
-        default=Path("config/default.yaml"),
+        default=Path(__file__).parent.parent.parent / "config" / "local.yaml",
         help="Path to YAML config",
     )
     p.add_argument("--no-serial", action="store_true", help="Camera + vision only")

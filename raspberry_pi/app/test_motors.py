@@ -33,7 +33,7 @@ _TEST_MOVES: list[tuple[int, int, float]] = [
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Motor test (serial to Arduino, no vision)")
-    p.add_argument("--config", type=Path, default=Path("config/default.yaml"))
+    p.add_argument("--config", type=Path, default=Path(__file__).parent.parent / "config" / "local.yaml")
     p.add_argument("--port", type=str, default=None, help="Override serial port")
     return p.parse_args(argv)
 

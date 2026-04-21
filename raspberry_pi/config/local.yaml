@@ -1,0 +1,42 @@
+camera:
+  index: 0
+  width: 640
+  height: 480
+  fps: null
+
+serial:
+  port: /dev/ttyUSB0
+  baud_rate: 115200
+  timeout: 1.0
+
+detection:
+  blur: 5
+  min_area: 400
+  motion_threshold: 25
+
+tracker:
+  max_history: 30
+  max_lost_frames: 5
+  landed_threshold_px: 8.0
+  landed_patience: 3
+
+trajectory:
+  history: 8
+  floor_row: 480
+  horizon_s: 0.35
+  min_samples: 3
+
+motor_control:
+  center_x: 320
+  center_y: 240
+  gain: 0.5
+  max_speed: 200
+  deadband_px: 10
+
+# Legacy pan/tilt keys (used by vision/main.py and existing tests)
+aim:
+  center_x: 320
+  center_y: 240
+  pixels_to_pan_steps: -0.15
+  pixels_to_tilt_steps: -0.15
+  max_step_per_frame: 80

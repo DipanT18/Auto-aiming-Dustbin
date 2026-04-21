@@ -1,5 +1,5 @@
 /*
- * motor_controller_esp32.ino  –  Auto-Aiming Dustbin – ESP32 variant
+ * auto_aiming_esp32.ino  –  Auto-Aiming Dustbin – ESP32 variant
  *
  * Differences from the Uno sketch:
  *  • Uses ESP32's LEDC hardware PWM (analogWrite() not available on ESP32).
@@ -20,9 +20,11 @@
  * Serial Protocol  (same as Uno variant — see docs/COMMUNICATION_PROTOCOL.md)
  *   Baud: 115200, USB-serial (UART0 on the DevKit USB connector).
  *   Commands: MOVE <vx> <vy>  |  STOP  |  HOME  |  PING
+ *   See arduino/common/protocol.h for the full protocol definition.
  */
 
 #include <Arduino.h>
+#include "../common/protocol.h"
 
 // ── LEDC PWM configuration ───────────────────────────────────────────────────
 #define PWM_FREQ       5000   // Hz
@@ -50,9 +52,6 @@
 #define W4_EN   4
 #define W4_IN1 16
 #define W4_IN2 17
-
-#define SERIAL_BAUD 115200
-#define CMD_BUF_LEN 64
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
