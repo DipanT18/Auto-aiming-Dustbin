@@ -2,7 +2,8 @@
 
 Architecture
 ------------
-Laptop (Python + OpenCV)  ←USB serial→  Arduino (omni-wheel motor control)
+Raspberry Pi (Python + OpenCV)  ←USB serial→  Arduino (omni-wheel motor control)
+Laptop is also supported for testing and demo.
 
 Loop
 ----
@@ -10,9 +11,9 @@ capture → detect → track → predict → move
 
 Usage
 -----
-    python main.py                        # use config/default.yaml
-    python main.py --config config/local.yaml --show
-    python main.py --no-serial            # vision only, no Arduino
+    python main.py                              # use ../config/local.yaml
+    python main.py --config ../config/local.yaml --show
+    python main.py --no-serial                  # vision only, no Arduino
 """
 
 from __future__ import annotations
@@ -41,8 +42,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument(
         "--config",
         type=Path,
-        default=Path("config/default.yaml"),
-        help="Path to YAML config file (default: config/default.yaml)",
+        default=Path(__file__).parent.parent / "config" / "local.yaml",
+        help="Path to YAML config file (default: ../config/local.yaml)",
     )
     p.add_argument(
         "--no-serial",

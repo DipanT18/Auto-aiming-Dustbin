@@ -2,15 +2,20 @@
 
 Two firmware variants are provided for the Auto-Aiming Dustbin motor controller.
 
-| File | Board target |
-|------|--------------|
-| `motor_controller.ino` | Arduino Uno / Mega / Nano |
-| `motor_controller_esp32.ino` | ESP32 (any 38-pin DevKit) |
+| Directory | File | Board target |
+|-----------|------|--------------|
+| `uno/` | `auto_aiming_uno.ino` | Arduino Uno / Mega / Nano |
+| `esp32/` | `auto_aiming_esp32.ino` | ESP32 (any 38-pin DevKit) |
+| `mega/` | — | Placeholder (see `mega/README.md`) |
+
+Shared protocol constants live in `common/protocol.h` and are included by both sketches.
 
 ## Upload instructions
 
 1. Install the [Arduino IDE](https://www.arduino.cc/en/software) (2.x recommended).
-2. Open the `.ino` file for your board.
+2. Open the `.ino` file for your board:
+   - Uno / Mega → `uno/auto_aiming_uno.ino`
+   - ESP32      → `esp32/auto_aiming_esp32.ino`
 3. Select **Tools → Board** and choose your board.
 4. Select **Tools → Port** and choose the correct COM port.
 5. Click **Upload** (Ctrl+U).
@@ -18,8 +23,9 @@ Two firmware variants are provided for the Auto-Aiming Dustbin motor controller.
 ## Serial protocol
 
 Both sketches implement the same line-oriented ASCII protocol at **115200 baud**.
+Constants are defined in `common/protocol.h`.
 
-### Commands (laptop → Arduino)
+### Commands (Pi → Arduino)
 
 | Command | Description |
 |---------|-------------|
@@ -28,7 +34,7 @@ Both sketches implement the same line-oriented ASCII protocol at **115200 baud**
 | `HOME` | Return to origin (STOP in this firmware) |
 | `PING` | Health check |
 
-### Responses (Arduino → laptop)
+### Responses (Arduino → Pi)
 
 | Response | Meaning |
 |----------|---------|
@@ -38,7 +44,7 @@ Both sketches implement the same line-oriented ASCII protocol at **115200 baud**
 
 ## Pin assignments
 
-### Uno / Mega (motor_controller.ino)
+### Uno / Mega (uno/auto_aiming_uno.ino)
 
 | Signal | Arduino pin |
 |--------|-------------|
@@ -51,7 +57,7 @@ Both sketches implement the same line-oriented ASCII protocol at **115200 baud**
 | W4 EN (rear-left) | D9 (PWM) |
 | W4 IN1 / IN2 | D12 / D13 |
 
-### ESP32 (motor_controller_esp32.ino)
+### ESP32 (esp32/auto_aiming_esp32.ino)
 
 | Signal | GPIO |
 |--------|------|

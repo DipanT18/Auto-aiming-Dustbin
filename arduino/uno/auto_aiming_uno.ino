@@ -1,5 +1,5 @@
 /*
- * motor_controller.ino  –  Auto-Aiming Dustbin – Arduino Uno / Mega variant
+ * auto_aiming_uno.ino  –  Auto-Aiming Dustbin – Arduino Uno / Mega variant
  *
  * Hardware
  * --------
@@ -20,7 +20,7 @@
  *     Note: Mega users may prefer higher-numbered digital pins (e.g. D22–D25)
  *     to free up D7/D8/D12/D13 for other purposes — update #defines accordingly.
  *
- * Serial Protocol  (see docs/COMMUNICATION_PROTOCOL.md)
+ * Serial Protocol  (see arduino/common/protocol.h and docs/COMMUNICATION_PROTOCOL.md)
  * ---------------
  * Baud: 115200.  All messages are newline-terminated ASCII.
  *
@@ -35,6 +35,8 @@
  *   OK              — command accepted
  *   ERR PARSE       — command not recognised
  */
+
+#include "../common/protocol.h"
 
 // ── Pin assignments ──────────────────────────────────────────────────────────
 
@@ -57,9 +59,6 @@
 #define W4_EN   9
 #define W4_IN1 12
 #define W4_IN2 13
-
-#define SERIAL_BAUD 115200
-#define CMD_BUF_LEN 64
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
